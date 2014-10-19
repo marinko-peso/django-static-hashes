@@ -26,3 +26,5 @@ STATIC_HASHES_OUTPUT_JSON = ... #path/to/output/json/file.json
 1. Add `{% load static_hashes_tags %}` to your template
 2. Add `{% get_static_hashes %}` to your template
 3. In javascript you can now acess `hashes`.
+
+Related to [this blog post](http://richardtier.com/2014/10/19/tell-browser-when-files-are-updated/)
