@@ -18,10 +18,12 @@ class Command(NoArgsCommand):
 
     def walk_static_dirs(self):
         for staticfile_dir in utils.STATIC_DIRS:
+            staticfile_dir = staticfile_dir['dir']  # MODIFIED
+            os.chdir(staticfile_dir)    # MODIFIED
             for root, dirs, files in os.walk(staticfile_dir):
                 for file in files:
                     path = os.path.join(root, file)
-                    if os.path.isfile(path):
+                    if os.path.isfile(path) and path.lower().endswith(('.js', '.css', '.html', '.htm')):
                         self.add_hash(path)
 
     def add_hash(self, path):
