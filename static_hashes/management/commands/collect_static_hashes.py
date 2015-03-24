@@ -18,8 +18,8 @@ class Command(NoArgsCommand):
 
     def walk_static_dirs(self):
         for staticfile_dir in utils.STATIC_DIRS:
-            staticfile_dir = staticfile_dir['dir']  # MODIFIED
-            os.chdir(staticfile_dir)    # MODIFIED
+            staticfile_dir = staticfile_dir['dir']
+            os.chdir(staticfile_dir)
             for root, dirs, files in os.walk(staticfile_dir):
                 for file in files:
                     path = os.path.join(root, file)
@@ -49,7 +49,13 @@ class Command(NoArgsCommand):
         )
         return json.dumps(self.hashes)
 
+    def navigate_to_output_dir(self):
+        if not os.path.exists(settings.STATIC_HASHES_OUTPUT_DIR):
+            os.makedirs(settings.STATIC_HASHES_OUTPUT_DIR)
+        os.chdir(settings.STATIC_HASHES_OUTPUT_DIR)
+
     def write_output_files(self):
+        self.navigate_to_output_dir()
         self.write_js_output_file()
         self.write_json_output_file()
 
