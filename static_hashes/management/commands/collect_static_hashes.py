@@ -21,7 +21,8 @@ class Command(NoArgsCommand):
     def walk_static_dirs(self):
         self.hashed_files_number = 0
         self.command_start_time = time.time()
-        exception_directories = ['vendor', 'unit_testing', 'harness']
+        exception_directories = getattr(settings, 'STATIC_HASHES_EXCEPTION_DIRECTORIES', [])
+        allowed_file_types = getattr(settings, 'STATIC_HASHES_ALLOWED_FILE_TYPES', ())
 
         for staticfile_dir in utils.STATIC_DIRS:
             staticfile_dir = staticfile_dir['dir']
@@ -32,7 +33,9 @@ class Command(NoArgsCommand):
                 for file in files:
                     try:
                         path = os.path.join(root, file)
-                        if os.path.isfile(path) and path.lower().endswith(('.js', '.css', '.html', '.htm')):
+                        if os.path.isfile(path):
+                            if allowed_file_types and not path.lower().endswith(allowed_file_types):
+                                continue
                             self.add_hash(path)
                             self.increment_file_number()
                             print path
