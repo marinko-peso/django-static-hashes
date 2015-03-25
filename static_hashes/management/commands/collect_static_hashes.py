@@ -21,18 +21,15 @@ class Command(NoArgsCommand):
     def walk_static_dirs(self):
         self.hashed_files_number = 0
         self.command_start_time = time.time()
+        exception_directories = ['vendor', 'unit_testing']
 
         for staticfile_dir in utils.STATIC_DIRS:
             staticfile_dir = staticfile_dir['dir']
             os.chdir(staticfile_dir)
             for root, dirs, files in os.walk(staticfile_dir):
+                if any(exc in url_string for exc in exception_directories):
+                    continue
                 for file in files:
-                    print "#############"
-                    print "root:" + root
-                    print "file: " + file
-                    print "dirs: "
-                    print dirs
-                    print "#############"
                     try:
                         path = os.path.join(root, file)
                         if os.path.isfile(path) and path.lower().endswith(('.js', '.css', '.html', '.htm')):
