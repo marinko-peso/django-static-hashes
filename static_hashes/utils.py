@@ -1,5 +1,6 @@
 from django.conf import settings
 import json
+import os
 
 
 if hasattr(settings, 'STATIC_HASHES_STATIC_DIRS'):
