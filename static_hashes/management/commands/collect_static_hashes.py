@@ -39,6 +39,9 @@ class Command(NoArgsCommand):
                         else:
                             print "#### TYPE: " + e.errno
                             print e
+                    except Exception as e:
+                        print "#### TYPE: " + e.errno
+                        print e
 
     def add_hash(self, path):
         self.hashes[self.transform_path(path)] = self.get_commit_hash(path)
