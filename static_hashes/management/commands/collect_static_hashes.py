@@ -27,7 +27,7 @@ class Command(NoArgsCommand):
             staticfile_dir = staticfile_dir['dir']
             os.chdir(staticfile_dir)
             for root, dirs, files in os.walk(staticfile_dir):
-                if any(exc in url_string for exc in exception_directories):
+                if any(exc in root for exc in exception_directories):
                     continue
                 for file in files:
                     try:
