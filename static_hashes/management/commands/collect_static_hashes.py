@@ -21,7 +21,7 @@ class Command(NoArgsCommand):
     def walk_static_dirs(self):
         self.hashed_files_number = 0
         self.command_start_time = time.time()
-        exception_directories = ['vendor', 'unit_testing']
+        exception_directories = ['vendor', 'unit_testing', 'harness']
 
         for staticfile_dir in utils.STATIC_DIRS:
             staticfile_dir = staticfile_dir['dir']
