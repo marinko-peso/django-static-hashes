@@ -1,6 +1,7 @@
 import errno
 import json
 import os
+import platform
 import subprocess
 import time
 
@@ -12,7 +13,10 @@ from static_hashes import utils
 
 class Command(NoArgsCommand):
     hashes = {}
-    get_hash_command = 'git blame {path} | sort -b -k 3 -r | head -1 | awk "{{print \$1}}"'
+    if platform.system() == "Windows":
+        get_hash_command = 'git blame {path} | sort -b -k 3 -r | head -1 | awk "{{print $1}}"'
+    else:
+        get_hash_command = "git blame {path} | sort -b -k 3 -r | head -1 | awk '{{print $1}}'"
     get_current_hash = "git rev-parse --short HEAD"
     def handle(self, **options):
         self.walk_static_dirs()
