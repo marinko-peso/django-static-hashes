@@ -30,7 +30,8 @@ class Command(NoArgsCommand):
                     print "#############"
                     print "root:" + root
                     print "file: " + file
-                    print "dirs: " + dirs
+                    print "dirs: "
+                    print dirs
                     print "#############"
                     try:
                         path = os.path.join(root, file)
