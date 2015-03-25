@@ -11,7 +11,8 @@ else:
 def get_current_hash():
     """returns newsest commit hash"""
     try:
-        with open(settings.STATIC_HASHES_OUTPUT_JSON, 'r') as f:
+        static_hashes_json = os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'static-hashes.json')
+        with open(static_hashes_json, 'r') as f:
             return json.loads(f.read())['__current__']
     except IOError:
         return ''

@@ -22,9 +22,16 @@ class Command(NoArgsCommand):
             os.chdir(staticfile_dir)
             for root, dirs, files in os.walk(staticfile_dir):
                 for file in files:
-                    path = os.path.join(root, file)
-                    if os.path.isfile(path) and path.lower().endswith(('.js', '.css', '.html', '.htm')):
-                        self.add_hash(path)
+                    try:
+                        path = os.path.join(root, file)
+                        if os.path.isfile(path) and path.lower().endswith(('.js', '.css', '.html', '.htm')):
+                            self.add_hash(path)
+                            print path
+                    except IOError, e:
+                        if e.errno == errno.EPIPE:
+                            pass
+                        else:
+                            print e
 
     def add_hash(self, path):
         self.hashes[self.transform_path(path)] = self.get_commit_hash(path)
@@ -61,9 +68,9 @@ class Command(NoArgsCommand):
 
     def write_js_output_file(self):
         #with open(settings.STATIC_HASHES_OUTPUT_JS, 'w') as f:
-        with open(os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'statis-hashes.js'), 'w') as f:
+        with open(os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'static-hashes.js'), 'w') as f:
             f.write('var hashes = ' + self.serialize())
 
     def write_json_output_file(self):
-        with open(os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'statis-hashes.json'), 'w') as f:
+        with open(os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'static-hashes.json'), 'w') as f:
             f.write(self.serialize())
