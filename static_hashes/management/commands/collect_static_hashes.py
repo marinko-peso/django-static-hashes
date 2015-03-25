@@ -60,9 +60,10 @@ class Command(NoArgsCommand):
         self.write_json_output_file()
 
     def write_js_output_file(self):
-        with open(settings.STATIC_HASHES_OUTPUT_JS, 'w') as f:
+        #with open(settings.STATIC_HASHES_OUTPUT_JS, 'w') as f:
+        with open(os.path.join(STATIC_HASHES_OUTPUT_DIR, 'statis-hashes.js'), 'w') as f:
             f.write('var hashes = ' + self.serialize())
 
     def write_json_output_file(self):
-        with open(settings.STATIC_HASHES_OUTPUT_JSON, 'w') as f:
+        with open(os.path.join(STATIC_HASHES_OUTPUT_DIR, 'statis-hashes.json'), 'w') as f:
             f.write(self.serialize())

@@ -10,8 +10,8 @@ register = template.Library()
 @register.simple_tag
 def get_static_hashes(*args, **kwargs):
     path = utils.local_to_browser_path(
-        #os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'test.js')
-        settings.STATIC_HASHES_OUTPUT_JS
+        os.path.join(STATIC_HASHES_OUTPUT_DIR, 'statis-hashes.js')
+        #settings.STATIC_HASHES_OUTPUT_JS
     )
     hash = utils.get_current_hash()
     tmpl = '<script type="text/javascript" src="{path}?hash={hash}"></script>'
