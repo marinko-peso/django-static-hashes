@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+import time
 
 from django.conf import settings
 from django.core.management.base import NoArgsCommand
@@ -15,8 +16,12 @@ class Command(NoArgsCommand):
     def handle(self, **options):
         self.walk_static_dirs()
         self.write_output_files()
+        self.output_end_command_data()
 
     def walk_static_dirs(self):
+        self.hashed_files_number = 0
+        self.command_start_time = time.time()
+
         for staticfile_dir in utils.STATIC_DIRS:
             staticfile_dir = staticfile_dir['dir']
             os.chdir(staticfile_dir)
@@ -26,11 +31,13 @@ class Command(NoArgsCommand):
                         path = os.path.join(root, file)
                         if os.path.isfile(path) and path.lower().endswith(('.js', '.css', '.html', '.htm')):
                             self.add_hash(path)
+                            self.increment_file_number()
                             print path
                     except IOError, e:
                         if e.errno == errno.EPIPE:
                             pass
                         else:
+                            print "#### TYPE: " + e.errno
                             print e
 
     def add_hash(self, path):
@@ -74,3 +81,10 @@ class Command(NoArgsCommand):
     def write_json_output_file(self):
         with open(os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'static-hashes.json'), 'w') as f:
             f.write(self.serialize())
+
+    def increment_file_number(self):
+        self.hashed_files_number = self.hashed_files_number + 1
+
+    def output_end_command_data(self):
+        print 'Grabbed hash for %s files in %s seconds.' % (self.hashed_files_number, time.time() - self.command_start_time)
+ 
