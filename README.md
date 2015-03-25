@@ -5,20 +5,19 @@ Output files containing hashes of when static files were last updated.
 
 **Installing**
 
-1. Run `pip install git+https://github.com/richtier/django-static-hashes.git`
+1. Run `pip install git+https://github.com/marinko-peso/django-static-hashes.git`
 2. Add 'static_hashes' to `INSTALLED APPS`
 3. Add the following to your settings:
 ```
 STATIC_HASHES_STATIC_DIRS = ... #list of folders containing static files you want to get hashes for
-STATIC_HASHES_OUTPUT_JS = ... #path/to/output/javascript/file.js
-STATIC_HASHES_OUTPUT_JSON = ... #path/to/output/json/file.json
+STATIC_HASHES_OUTPUT_DIR = ... #path/to/output/javascript/and/json
 ```
 
 
 **Create the hashes**
 
 1. Run `manage.py collect_static_hashes`. This may take some time.
-2. Take a look at the files defined by `STATIC_HASHES_OUTPUT_JS` and `STATIC_HASHES_OUTPUT_JSON`
+2. Take a look at the files defined in STATIC_HASHES_OUTPUT_DIR
 
 
 **Use the hashes in the browser**

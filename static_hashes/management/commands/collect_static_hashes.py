@@ -27,6 +27,11 @@ class Command(NoArgsCommand):
             os.chdir(staticfile_dir)
             for root, dirs, files in os.walk(staticfile_dir):
                 for file in files:
+                    print "#############"
+                    print "root:" + root
+                    print "file: " + file
+                    print "dirs: " + dirs
+                    print "#############"
                     try:
                         path = os.path.join(root, file)
                         if os.path.isfile(path) and path.lower().endswith(('.js', '.css', '.html', '.htm')):
@@ -37,11 +42,7 @@ class Command(NoArgsCommand):
                         if e.errno == errno.EPIPE:
                             pass
                         else:
-                            print "#### TYPE: " + e.errno
                             print e
-                    except Exception as e:
-                        print "#### TYPE: " + e.errno
-                        print e
 
     def add_hash(self, path):
         self.hashes[self.transform_path(path)] = self.get_commit_hash(path)
@@ -77,7 +78,6 @@ class Command(NoArgsCommand):
         self.write_json_output_file()
 
     def write_js_output_file(self):
-        #with open(settings.STATIC_HASHES_OUTPUT_JS, 'w') as f:
         with open(os.path.join(settings.STATIC_HASHES_OUTPUT_DIR, 'static-hashes.js'), 'w') as f:
             f.write('var hashes = ' + self.serialize())
 
@@ -89,5 +89,5 @@ class Command(NoArgsCommand):
         self.hashed_files_number = self.hashed_files_number + 1
 
     def output_end_command_data(self):
-        print 'Grabbed hash for %s files in %s seconds.' % (self.hashed_files_number, time.time() - self.command_start_time)
+        print '\nGrabbed hash for %s files in %s seconds.' % (self.hashed_files_number, time.time() - self.command_start_time)
  
