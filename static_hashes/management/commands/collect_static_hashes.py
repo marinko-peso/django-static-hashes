@@ -18,6 +18,7 @@ class Command(NoArgsCommand):
     else:
         get_hash_command = "git blame {path} | sort -b -k 3 -r | head -1 | awk '{{print $1}}'"
     get_current_hash = "git rev-parse --short HEAD"
+    last_commit_files = getattr(settings, 'STATIC_HASHES_LAST_COMMIT_FILES', [])
     def handle(self, **options):
         self.walk_static_dirs()
         self.write_output_files()
@@ -54,8 +55,11 @@ class Command(NoArgsCommand):
         self.hashes[self.transform_path(path)] = self.get_commit_hash(path)
 
     def get_commit_hash(self, path):
-        command = self.get_hash_command.format(path=path)
-        commit_hash = subprocess.check_output(command, shell=True)
+        if os.path.basename(path) in self.last_commit_files:
+            commit_hash = subprocess.check_output(self.get_current_hash, shell=True)
+        else:    
+            command = self.get_hash_command.format(path=path)
+            commit_hash = subprocess.check_output(command, shell=True)
         return self.transform_commit_hash(commit_hash)
 
     @staticmethod
