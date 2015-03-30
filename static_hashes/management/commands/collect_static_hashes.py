@@ -55,6 +55,11 @@ class Command(NoArgsCommand):
         self.hashes[self.transform_path(path)] = self.get_commit_hash(path)
 
     def get_commit_hash(self, path):
+        print "#####################################"
+        print path
+        print os.path.basename(path)
+        print self.last_commit_files
+        print "####################################"
         if os.path.basename(path) in self.last_commit_files:
             commit_hash = subprocess.check_output(self.get_current_hash, shell=True)
         else:    
